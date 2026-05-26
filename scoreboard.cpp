@@ -69,8 +69,8 @@ bool Mission::checkStage4(int maxLen, int growth, int poison, int gate, int elap
  *   G: 게이트 통과 횟수        → 목표: >= 1
  */
 void ScoreBoard::drawStage1(const Snake& snake) {
-    pHeader(1);           // "Stage 1" / "Mission" 헤더 출력
-    int row = IPY + 2;    // 헤더 아래 2줄부터 데이터 표시
+    pHeader(1);                 // "Stage 1" / "Mission" 헤더 출력
+    const int row = IPY + 2;    // 헤더 아래 2줄부터 데이터 표시
 
     // 현재 상태 (왼쪽 열)
     mvprintw(row,   IPX, "B: %d / %d", (int)snake.body.size(), snake.maxLength);
@@ -117,7 +117,7 @@ void ScoreBoard::drawStage1(const Snake& snake) {
  */
 void ScoreBoard::drawStage2(const Snake& snake, int timeLeft, int speedLv) {
     pHeader(2);
-    int row = IPY + 2;
+    const int row = IPY + 2;
 
     // 현재 상태
     mvprintw(row,   IPX, "Length:  %d",    (int)snake.body.size());
@@ -138,7 +138,7 @@ void ScoreBoard::drawStage2(const Snake& snake, int timeLeft, int speedLv) {
  */
 void ScoreBoard::drawStage3(const Snake& snake) {
     pHeader(3);
-    int row = IPY + 2;
+    const int row = IPY + 2;
 
     // 현재 섭취 횟수 (초록색)
     attron(COLOR_PAIR(PAIR_TEXT_GOOD));
@@ -164,7 +164,7 @@ void ScoreBoard::drawStage3(const Snake& snake) {
  */
 void ScoreBoard::drawStage4(const Snake& snake, int elapsed, int speedLv) {
     pHeader(4);
-    int row = IPY + 2;
+    const int row = IPY + 2;
 
     // 현재 상태 (왼쪽 열)
     mvprintw(row,   IPX, "Time: %2ds  Lv.%d", elapsed, speedLv);

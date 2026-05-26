@@ -17,15 +17,15 @@
 vector<Point> GameMap::terrainWalls(int stage) const {
     vector<Point> walls;
     if (stage == 3) {
-        int cy = MAP_SIZE / 2;   // 가로 벽이 놓일 행
-        int cx = MAP_SIZE / 2;   // 틈(갭)을 만들 열
+        const int cy = MAP_SIZE / 2;   // 가로 벽이 놓일 행
+        const int cx = MAP_SIZE / 2;   // 틈(갭)을 만들 열
         // x=1 ~ MAP_SIZE-2 범위를 순회하며, 중앙 열(cx)만 제외하고 벽 추가
         for (int x = 1; x < MAP_SIZE - 1; x++)
             if (x != cx)
                 walls.push_back({cy, x});
     } else if (stage == 4) {
-        int cy = MAP_SIZE / 2, cx = MAP_SIZE / 2;
-        int arm = MAP_SIZE / 8;  // 십자 팔 길이 (중심에서 arm 칸씩 뻗어나감)
+        const int cy = MAP_SIZE / 2, cx = MAP_SIZE / 2;
+        const int arm = MAP_SIZE / 8;  // 십자 팔 길이 (중심에서 arm 칸씩 뻗어나감)
         // 수평 팔 : (cy, cx-arm) ~ (cy, cx+arm)
         for (int x = cx - arm; x <= cx + arm; x++)
             walls.push_back({cy, x});

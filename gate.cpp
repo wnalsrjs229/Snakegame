@@ -30,7 +30,7 @@ void GateManager::spawn(GameMap& gmap, int stage) {
 
     // 테두리 벽 좌표 수집 (상단·하단 가로줄, 좌측·우측 세로줄)
     vector<Point> borderWalls;
-    vector<Point> terrainW = gmap.terrainWalls(stage);  // 내부 지형 벽
+    const vector<Point> terrainW = gmap.terrainWalls(stage);  // 내부 지형 벽
 
     for (int x = 1; x < MAP_SIZE-1; x++) {
         if (gmap.get(0, x) == 1)           borderWalls.push_back({0, x});
@@ -86,15 +86,15 @@ void GateManager::spawn(GameMap& gmap, int stage) {
  */
 pair<int,int> GateManager::exitDir(int edy, int edx, Point exitGate, const GameMap& gmap) const {
     // 후보 방향 4가지 : 직진, 우회전(CW 90°), 좌회전(CCW 90°), 유턴
-    int cands[4][2] = {
+    const int cands[4][2] = {
         { edy,  edx},   // 직진
         { edx, -edy},   // 시계방향 90도
         {-edx,  edy},   // 반시계방향 90도
         {-edy, -edx}    // 반대 방향
     };
-    for (auto& c : cands) {
-        int ny = exitGate.y + c[0];
-        int nx = exitGate.x + c[1];
+    for (const auto& c : cands) {
+        const int ny = exitGate.y + c[0];
+        const int nx = exitGate.x + c[1];
         // 맵 범위 안에 있고 벽이 아닌 칸이면 해당 방향 선택
         if (ny >= 0 && ny < MAP_SIZE && nx >= 0 && nx < MAP_SIZE &&
             gmap.get(ny, nx) != 1 && gmap.get(ny, nx) != 2)

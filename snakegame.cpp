@@ -176,7 +176,7 @@ public:
      * 4) 게임 오버 시 showGameOver() 후 즉시 종료한다.
      */
     void run() {
-        int startStage = selectStage();
+        const int startStage = selectStage();
         timeout(0);   // 논블로킹 입력 모드 (getch()가 즉시 반환)
 
         for (int stage = startStage; stage <= 4; stage++) {
@@ -220,7 +220,7 @@ private:
         mvprintw(8, 2, "  4 - Stage 4");
         refresh();
         while (true) {
-            int k = getch();
+            const int k = getch();
             if (k >= '1' && k <= '4') return k - '0';
         }
     }
@@ -301,7 +301,7 @@ private:
         while (true) {
             if (snake.handleInput()) break;   // U턴 입력 → 게임 오버
 
-            auto now = steady_clock::now();
+            const auto now = steady_clock::now();
             itemMgr.expire(gmap);             // 만료 아이템 제거
             tickGate(now, lastGate, gateLock, 1);
 
@@ -362,9 +362,9 @@ private:
         while (true) {
             if (snake.handleInput()) break;
 
-            auto now       = steady_clock::now();
-            long elapsedMs = duration_cast<milliseconds>(now - stageStart).count();
-            int  timeLeft  = 30 - (int)(elapsedMs / 1000);   // 남은 시간 (초)
+            const auto now       = steady_clock::now();
+            const long elapsedMs = duration_cast<milliseconds>(now - stageStart).count();
+            const int  timeLeft  = 30 - (int)(elapsedMs / 1000);   // 남은 시간 (초)
 
             itemMgr.expire(gmap);
             tickGate(now, lastGate, gateLock, 2);
@@ -415,7 +415,7 @@ private:
         while (true) {
             if (snake.handleInput()) break;
 
-            auto now = steady_clock::now();
+            const auto now = steady_clock::now();
             itemMgr.expire(gmap);
             tickGate(now, lastGate, gateLock, 3);
 
@@ -467,8 +467,8 @@ private:
         while (true) {
             if (snake.handleInput()) break;
 
-            auto now     = steady_clock::now();
-            int  elapsed = (int)(duration_cast<milliseconds>(now - stageStart).count() / 1000);
+            const auto now     = steady_clock::now();
+            const int  elapsed = (int)(duration_cast<milliseconds>(now - stageStart).count() / 1000);
 
             itemMgr.expire(gmap);
             tickGate(now, lastGate, gateLock, 4);

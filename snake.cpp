@@ -63,10 +63,10 @@ void Snake::reset(GameMap& gmap, int stage) {
  *   - 90도 방향 전환만 허용.
  */
 bool Snake::handleInput() {
-    int key = getch();
+    const int key = getch();
 
     // 현재 이동 방향의 정반대 키면 즉시 게임 오버
-    bool reverse = (key == KEY_UP    && dy ==  1) ||
+    const bool reverse = (key == KEY_UP    && dy ==  1) ||
                    (key == KEY_DOWN  && dy == -1) ||
                    (key == KEY_LEFT  && dx ==  1) ||
                    (key == KEY_RIGHT && dx == -1);
@@ -123,12 +123,12 @@ bool Snake::move(GameMap& gmap, ItemManager& itemMgr, GateManager& gateMgr) {
     // ── 게이트 통과 ──────────────────────────────────────────────────────────
     if (gateMgr.gatesActive && cell == 7) {
         // 진입 게이트 인덱스 판별 (0번 또는 1번)
-        int enterIdx = (gateMgr.gateList[0].pos.y == newHead.y &&
-                        gateMgr.gateList[0].pos.x == newHead.x) ? 0 : 1;
-        int exitIdx  = 1 - enterIdx;  // 출구는 반대쪽
+        const int enterIdx = (gateMgr.gateList[0].pos.y == newHead.y &&
+                              gateMgr.gateList[0].pos.x == newHead.x) ? 0 : 1;
+        const int exitIdx  = 1 - enterIdx;  // 출구는 반대쪽
 
         // 출구 방향 계산 (직진 우선, 벽이면 회전)
-        pair<int,int> d = gateMgr.exitDir(dy, dx, gateMgr.gateList[exitIdx].pos, gmap);
+        const pair<int,int> d = gateMgr.exitDir(dy, dx, gateMgr.gateList[exitIdx].pos, gmap);
         dy = d.first; dx = d.second;
 
         // 출구 게이트에서 한 칸 더 나아간 위치가 실제 뱀 머리 위치
@@ -143,8 +143,8 @@ bool Snake::move(GameMap& gmap, ItemManager& itemMgr, GateManager& gateMgr) {
     // 벽(1), 코너(2), 내 몸통(3), 게이트(7, 통과 실패), 트랩(8) 충돌 → 사망
     if (cell == 1 || cell == 2 || cell == 3 || cell == 7 || cell == 8) return false;
 
-    bool isGood = (cell == 5);   // 먹이
-    bool isBad  = (cell == 6);   // 독
+    const bool isGood = (cell == 5);   // 먹이
+    const bool isBad  = (cell == 6);   // 독
 
     if (isGood) growthCount++;
     if (isBad)  poisonCount++;
@@ -156,7 +156,7 @@ bool Snake::move(GameMap& gmap, ItemManager& itemMgr, GateManager& gateMgr) {
     // ── 독: 꼬리 1칸 추가 제거 ───────────────────────────────────────────────
     // 일반 이동 시 꼬리도 1칸 제거되므로 실질적으로 -1 효과가 생긴다
     if (isBad) {
-        Point extra = body.back();
+        const Point extra = body.back();
         body.pop_back();
         gmap.set(extra.y, extra.x, 0);
     }
@@ -164,7 +164,7 @@ bool Snake::move(GameMap& gmap, ItemManager& itemMgr, GateManager& gateMgr) {
     // ── 꼬리 이동 (먹이를 먹지 않은 경우만) ──────────────────────────────────
     // 먹이를 먹으면 꼬리를 유지해 길이 +1, 그 외에는 꼬리 제거로 길이 유지
     if (!isGood) {
-        Point tail = body.back();
+        const Point tail = body.back();
         body.pop_back();
         gmap.set(tail.y, tail.x, 0);  // 꼬리 칸을 빈 칸으로 비움
     }

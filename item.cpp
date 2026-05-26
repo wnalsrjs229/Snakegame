@@ -21,9 +21,9 @@ int  Food::count() const { return (int)items.size(); }
  *   3) items에 추가한다. trapPos는 (-1,-1)로 설정해 트랩 없음을 표시한다.
  */
 void Food::spawnSimple(GameMap& gmap) {
-    auto empty = getEmptyCells(gmap);
+    const auto empty = getEmptyCells(gmap);
     if (empty.empty()) return;
-    Point p = empty[rand() % empty.size()];
+    const Point p = empty[rand() % empty.size()];
     gmap.set(p.y, p.x, 5);
     items.push_back({p, 5, steady_clock::now(), {-1, -1}});
 }
@@ -52,7 +52,7 @@ void Food::spawnWithTrap(GameMap& gmap) {
         // 후보 칸(p)의 상하좌우에서 내부 빈 칸만 수집
         vector<Point> adj;
         for (const auto& d : dirs) {
-            int ny = p.y+d[0], nx = p.x+d[1];
+            const int ny = p.y+d[0], nx = p.x+d[1];
             // 테두리(0, MAP_SIZE-1)는 제외하고 내부 빈 칸만 허용
             if (ny >= 1 && ny < MAP_SIZE-1 && nx >= 1 && nx < MAP_SIZE-1 &&
                 gmap.get(ny, nx) == 0)
@@ -61,7 +61,7 @@ void Food::spawnWithTrap(GameMap& gmap) {
         if (adj.empty()) continue;   // 주변에 빈 칸이 없으면 다음 후보로
 
         // 인접 빈 칸 중 하나를 트랩 위치로 결정
-        Point trap = adj[rand() % adj.size()];
+        const Point trap = adj[rand() % adj.size()];
         gmap.set(p.y, p.x, 5);        // 먹이
         gmap.set(trap.y, trap.x, 8);  // 트랩
         items.push_back({p, 5, steady_clock::now(), trap});
@@ -78,7 +78,7 @@ void Food::spawnWithTrap(GameMap& gmap) {
  * 트랩이 있는 먹이(trapPos.y >= 0)는 트랩 셀도 함께 0으로 초기화한다.
  */
 void Food::expire(GameMap& gmap) {
-    auto now = steady_clock::now();
+    const auto now = steady_clock::now();
     for (int i = (int)items.size()-1; i >= 0; i--) {
         if (duration_cast<milliseconds>(now - items[i].spawnTime).count() >= ITEM_LIFETIME_MS) {
             gmap.set(items[i].pos.y, items[i].pos.x, 0);  // 먹이 칸 초기화
@@ -129,9 +129,9 @@ int  Poison::count() const { return (int)items.size(); }
  * Food::spawnSimple과 동일한 방식이지만 타입이 6이고 trapPos가 없다.
  */
 void Poison::spawn(GameMap& gmap) {
-    auto empty = getEmptyCells(gmap);
+    const auto empty = getEmptyCells(gmap);
     if (empty.empty()) return;
-    Point p = empty[rand() % empty.size()];
+    const Point p = empty[rand() % empty.size()];
     gmap.set(p.y, p.x, 6);
     items.push_back({p, 6, steady_clock::now(), {-1, -1}});
 }
@@ -141,7 +141,7 @@ void Poison::spawn(GameMap& gmap) {
  * Food::expire와 동일한 논리, 단 독에는 트랩이 없다.
  */
 void Poison::expire(GameMap& gmap) {
-    auto now = steady_clock::now();
+    const auto now = steady_clock::now();
     for (int i = (int)items.size()-1; i >= 0; i--) {
         if (duration_cast<milliseconds>(now - items[i].spawnTime).count() >= ITEM_LIFETIME_MS) {
             gmap.set(items[i].pos.y, items[i].pos.x, 0);
@@ -213,8 +213,8 @@ void ItemManager::expire(GameMap& gmap) {
  * 먹이를 먼저 확인하고, 없으면 독을 확인한다.
  */
 void ItemManager::removeAt(int y, int x, GameMap& gmap) {
-    int fi = food.findAt(y, x);
+    const int fi = food.findAt(y, x);
     if (fi >= 0) { food.removeAt(fi, gmap); return; }
-    int pi = poison.findAt(y, x);
+    const int pi = poison.findAt(y, x);
     if (pi >= 0) { poison.removeAt(pi, gmap); }
 }
